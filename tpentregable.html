@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>primer diseño</title>
+</head>
+
+<body>
+    <script>
+        function loadImage(url) {
+            return new Promise(function (resolve, reject) {
+                var request = new XMLHttpRequest();
+                request.open('GET', url);
+                request.responseType = 'json';
+                request.onload = function () {
+                    if (request.status == 200) {
+                        resolve(request.response);
+                    }
+                    else {
+                        reject(Error('Image couldn\'t be loaded.error:' + request.statustext))
+                    }
+                }
+
+                request.onerror = function () {
+                    reject(Error('Oops!,there was a network error.'));
+                }
+                request.send();
+
+
+            })
+        }
+
+
+        loadImage('https://aabb-181-230-219-190.ngrok.io/student/getAll')
+            .then((response) => {
+                response.forEach(element => {
+                    var tbody = document.querySelector('tbody');
+                    var row = tbody.insertRow()
+                    var cell1 = row.insertCell()
+                    cell1.innerHTML = element.id
+                    var cell2 = row.insertCell()
+                    cell2.innerHTML = element.dni
+                    var cell3 = row.insertCell()
+                    cell3.innerHTML = element.lastName
+                    var cell4 = row.insertCell()
+                    cell4.innerHTML = element.firstName
+                    var cell5 = row.insertCell()
+                    cell5.innerHTML = element.email
+
+                });
+
+            })
+            .catch((reason) => {
+                console.log(Error(reason));
+            })
+    </script>
+    <table>
+        <tbody>
+
+        </tbody>
+    </table>
+</body>
+
+</html>
